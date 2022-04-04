@@ -15,14 +15,20 @@
                  style="position: absolute; background-color: yellow; top: 0; left: 0; bottom: 0; width: 100%"></div>
         </div>
         <!--    timer    -->
-        <div style="background-color: deepskyblue; height: 100px; width: 100px; flex-shrink: 0"></div>
+        <div id="timer" style="background-color: deepskyblue;
+        height: 100px; width: 100px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+        font-size: 40px; font-weight: bold; border-radius: 10px">
+            60
+        </div>
         <!--    enemy health    -->
         <div style="position: relative; display: flex; justify-content: flex-end; height: 30px; width: 100%">
             <div style="background-color: red; height: 30px; width: 100%"></div>
             <div id="enemyHealth"
-                 style="position: absolute; background-color: yellow; top: 0; bottom: 0; width: 100%" ></div>
+                 style="position: absolute; background-color: yellow; top: 0; bottom: 0; width: 100%"></div>
         </div>
     </div>
+    <div id="fightingResult" style="position: absolute; color: aliceblue; display: none; align-items: center; justify-content: center;
+    top: 0; bottom: 0; right: 0; left: 0">Tie</div>
     <canvas></canvas>
 </div>
 

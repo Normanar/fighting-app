@@ -81,7 +81,7 @@ const player = new Sprite({
 
 const enemy = new Sprite({
     position: {
-        x: 500,
+        x: 944,
         y: 100,
     },
     velocity: {
@@ -122,6 +122,34 @@ function playersCollision({attacking, defending}) {
     )
 }
 
+function determineWinner({player, enemy}) {
+    document.querySelector('#fightingResult').style.display = "flex"
+    if (player.health === enemy.health) {
+        document.querySelector('#fightingResult').innerHTML = "Tie!"
+    } else if (player.health > enemy.health) {
+        document.querySelector('#fightingResult').innerHTML = "Player 1 win!"
+    } else {
+        document.querySelector('#fightingResult').innerHTML = "Player 2 win!"
+    }
+}
+
+let timer = 60;
+let timerId;
+
+function decreaseTimer() {
+    if (timer > 0) {
+        timerId = setTimeout(decreaseTimer, 1000)
+        timer -= 1
+        document.querySelector('#timer').innerHTML = timer + ''
+    }
+
+    if (timer === 0) {
+        determineWinner({player, enemy})
+    }
+}
+
+decreaseTimer()
+
 function animate() {
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
@@ -161,6 +189,11 @@ function animate() {
         enemy.isAttacking = false
         player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
+    }
+
+    if(player.health <= 0 || enemy.health <= 0) {
+        determineWinner({player, enemy})
+        clearTimeout(timerId)
     }
 }
 
