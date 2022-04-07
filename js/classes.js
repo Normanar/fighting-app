@@ -1,5 +1,5 @@
 class Sprite {
-    constructor({position, imageSrc, scale = 1, framesMax = 1}) {
+    constructor({position, imageSrc, scale = 1, framesMax = 1, offsetImg = {x : 0, y : 0}}) {
         this.position = position
         this.height = 150
         this.width = 50
@@ -10,23 +10,23 @@ class Sprite {
         this.currentFrame = 0
         this.framesElapsed = 0
         this.framesHold = 5
+        this.offsetImg = offsetImg
     }
 
     draw() {
         c.drawImage(this.image,
-            (this.image.width / this.framesMax) * this.currentFrame,
+            this.currentFrame * (this.image.width / this.framesMax),
             0,
             this.image.width / this.framesMax,
             this.image.height,
-            this.position.x,
-            this.position.y,
+            this.position.x - this.offsetImg.x,
+            this.position.y - this.offsetImg.y,
             (this.image.width / this.framesMax) * this.scale,
             this.image.height * this.scale,
         )
     }
 
-    update() {
-        this.draw()
+    animateFrame() {
         this.framesElapsed++
         if (this.framesElapsed % this.framesHold === 0) {
             if (this.currentFrame < this.framesMax - 1) {
@@ -36,11 +36,22 @@ class Sprite {
             }
         }
     }
+
+    update() {
+        this.draw()
+        this.animateFrame()
+    }
 }
 
-class Fighter {
-    constructor({position, velocity, color, offset}) {
-        this.position = position
+class Fighter extends Sprite {
+    constructor({position, velocity, color, offset, imageSrc, scale = 1, framesMax = 1, offsetImg = {x : 0, y : 0}}) {
+        super({
+            position,
+            imageSrc,
+            scale,
+            framesMax,
+            offsetImg
+        })
         this.velocity = velocity
         this.height = 150
         this.width = 50
@@ -57,23 +68,14 @@ class Fighter {
         }
         this.isAttacking
         this.health = 100
-    }
-
-    draw() {
-        c.fillStyle = this.color
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
-        // attack box
-        if (this.isAttacking) {
-            c.fillRect(this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height)
-        }
+        this.currentFrame = 0
+        this.framesElapsed = 0
+        this.framesHold = 5
     }
 
     update() {
         this.draw()
+        this.animateFrame()
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y

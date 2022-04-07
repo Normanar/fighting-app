@@ -28,17 +28,24 @@ const shop = new Sprite({
 
 const player = new Fighter({
     position: {
-        x: 30,
+        x: 40,
         y: 200,
     },
     velocity: {
         x: 0,
         y: 0,
     },
-    color: "green",
     offset: {
         x: 0,
         y: 0,
+    },
+    imageSrc : "./img/martialHero/Idle.png",
+    //imageSrc : "./img/Huntress/Idle.png",
+    framesMax : 8,
+    scale : 2.5,
+    offsetImg : {
+        x : 150,
+        y : 150
     }
 })
 
@@ -78,14 +85,13 @@ const keys = {
 decreaseTimer()
 
 function animate() {
+    window.requestAnimationFrame(animate)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
     background.update()
     shop.update()
     player.update()
-    enemy.update()
-    window.requestAnimationFrame(animate)
-
+    //enemy.update()
     player.velocity.x = 0
     enemy.velocity.x = 0
 
