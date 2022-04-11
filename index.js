@@ -5,6 +5,7 @@ canvas.width = 1024
 canvas.height = 576
 
 const gravity = 0.7
+const playerPathImg = 'medievalKing'
 
 c.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -40,12 +41,33 @@ const player = new Fighter({
         y: 0,
     },
     imageSrc : "./img/martialHero/Idle.png",
-    //imageSrc : "./img/Huntress/Idle.png",
     framesMax : 8,
     scale : 2.5,
     offsetImg : {
         x : 150,
-        y : 150
+        y : 110
+    },
+    sprites : {
+        idle : {
+            imageSrc : `./img/${playerPathImg}/Idle.png`,
+            framesMax : 8,
+        },
+        run : {
+            imageSrc : `./img/${playerPathImg}/Run.png`,
+            framesMax : 8,
+        },
+        jump : {
+            imageSrc : `./img/${playerPathImg}/Jump.png`,
+            framesMax : 2,
+        },
+        fall : {
+            imageSrc : `./img/${playerPathImg}/Fall.png`,
+            framesMax : 2,
+        },
+        attack : {
+            imageSrc : `./img/${playerPathImg}/Attack3.png`,
+            framesMax : 4,
+        },
     }
 })
 
@@ -96,10 +118,23 @@ function animate() {
     enemy.velocity.x = 0
 
     //player movement
+
     if (keys.a.pressed && player.lastKey === 'a') {
         player.velocity.x = -4
+        player.switchSprite('run')
     } else if (keys.d.pressed && player.lastKey === 'd') {
         player.velocity.x = 4
+        player.switchSprite('run')
+    } else {
+        player.switchSprite('idle')
+    }
+
+    if (player.velocity.y < 0) {
+        player.switchSprite('jump')
+    }
+
+    if (player.velocity.y > 0) {
+        player.switchSprite('fall')
     }
 
     //enemy movement
@@ -148,7 +183,7 @@ window.addEventListener('keydown', (e) => {
             if (jumpPlayer) {
                 player.velocity.y = -20
                 jumpPlayer = false
-                setTimeout(() => jumpPlayer = true, 800)
+                setTimeout(() => jumpPlayer = true, 1000)
             }
             break
         case 's' :
