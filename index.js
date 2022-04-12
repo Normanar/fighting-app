@@ -69,6 +69,10 @@ const player = new Fighter({
             imageSrc: `./img/${playerPathImg}/Attack3.png`,
             framesMax: 4,
         },
+        takeHit: {
+            imageSrc: `./img/${playerPathImg}/Take Hit - white silhouette.png`,
+            framesMax: 4,
+        },
     },
     attackBox: {
         offset: {
@@ -121,6 +125,10 @@ const enemy = new Fighter({
         attack: {
             imageSrc: `./img/${enemyPathImg}/Attack2.png`,
             framesMax: 4,
+        },
+        takeHit: {
+            imageSrc: `./img/${enemyPathImg}/Take Hit.png`,
+            framesMax: 3,
         },
     },
     attackBox: {
@@ -219,8 +227,8 @@ function animate() {
     if (playersCollision({attacking: player, defending: enemy})
         && player.isAttacking && player.currentFrame === 2
     ) {
+        enemy.takeHit()
         player.isAttacking = false
-        enemy.health -= 20
         document.querySelector('#enemyHealth').style.width = enemy.health + '%'
     }
 
@@ -232,8 +240,8 @@ function animate() {
     if (playersCollision({attacking: enemy, defending: player})
         && enemy.isAttacking && enemy.currentFrame === 2
     ) {
+        player.takeHit()
         enemy.isAttacking = false
-        player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
     }
 
