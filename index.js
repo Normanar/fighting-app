@@ -69,6 +69,14 @@ const player = new Fighter({
             imageSrc: `./img/${playerPathImg}/Attack3.png`,
             framesMax: 4,
         },
+    },
+    attackBox: {
+        offset: {
+            x: 86,
+            y: 50,
+        },
+        width : 200,
+        height : 50
     }
 })
 
@@ -114,6 +122,14 @@ const enemy = new Fighter({
             imageSrc: `./img/${enemyPathImg}/Attack2.png`,
             framesMax: 4,
         },
+    },
+    attackBox: {
+        offset: {
+            x: -224,
+            y: 50,
+        },
+        width : 140,
+        height : 50
     }
 })
 
@@ -201,25 +217,36 @@ function animate() {
 
     // detect for collision
     if (playersCollision({attacking: player, defending: enemy})
-        && player.isAttacking
+        && player.isAttacking && player.currentFrame === 2
     ) {
         player.isAttacking = false
         enemy.health -= 20
         document.querySelector('#enemyHealth').style.width = enemy.health + '%'
     }
 
+    // if player misses
+    if (player.isAttacking && player.currentFrame === 2) {
+        player.isAttacking = false
+    }
+
     if (playersCollision({attacking: enemy, defending: player})
-        && enemy.isAttacking
+        && enemy.isAttacking && enemy.currentFrame === 2
     ) {
         enemy.isAttacking = false
         player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
     }
 
+    // if enemy misses
+    if (enemy.isAttacking && enemy.currentFrame === 2) {
+        enemy.isAttacking = false
+    }
+
     if (player.health <= 0 || enemy.health <= 0) {
         determineWinner({player, enemy})
         clearTimeout(timerId)
     }
+
 }
 
 animate()
