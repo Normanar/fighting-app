@@ -73,14 +73,18 @@ const player = new Fighter({
             imageSrc: `./img/${playerPathImg}/Take Hit - white silhouette.png`,
             framesMax: 4,
         },
+        death: {
+            imageSrc: `./img/${playerPathImg}/Death.png`,
+            framesMax: 6,
+        },
     },
     attackBox: {
         offset: {
             x: 86,
             y: 50,
         },
-        width : 200,
-        height : 50
+        width: 200,
+        height: 50
     }
 })
 
@@ -130,14 +134,18 @@ const enemy = new Fighter({
             imageSrc: `./img/${enemyPathImg}/Take Hit.png`,
             framesMax: 3,
         },
+        death: {
+            imageSrc: `./img/${enemyPathImg}/Death.png`,
+            framesMax: 7,
+        },
     },
     attackBox: {
         offset: {
             x: -224,
             y: 50,
         },
-        width : 140,
-        height : 50
+        width: 140,
+        height: 50
     }
 })
 
@@ -260,45 +268,51 @@ function animate() {
 animate()
 
 window.addEventListener('keydown', (e) => {
-    switch (e.key) {
-        case 'd' :
-            keys.d.pressed = true
-            player.lastKey = 'd'
-            break
-        case 'a' :
-            keys.a.pressed = true
-            player.lastKey = 'a'
-            break
-        case 'w' :
-            if (jumpPlayer) {
-                player.velocity.y = -20
-                jumpPlayer = false
-                setTimeout(() => jumpPlayer = true, 1000)
-            }
-            break
-        case 's' :
-            player.attack()
-            break
 
+    if (!player.dead) {
+        switch (e.key) {
+            case 'd' :
+                keys.d.pressed = true
+                player.lastKey = 'd'
+                break
+            case 'a' :
+                keys.a.pressed = true
+                player.lastKey = 'a'
+                break
+            case 'w' :
+                if (jumpPlayer) {
+                    player.velocity.y = -20
+                    jumpPlayer = false
+                    setTimeout(() => jumpPlayer = true, 1000)
+                }
+                break
+            case 's' :
+                player.attack()
+                break
+        }
+    }
+    if (!enemy.dead) {
+        switch (e.key) {
 
-        case 'ArrowRight' :
-            keys.arrowRight.pressed = true
-            enemy.lastKey = 'ArrowRight'
-            break
-        case 'ArrowLeft' :
-            keys.arrowLeft.pressed = true
-            enemy.lastKey = 'ArrowLeft'
-            break
-        case 'ArrowUp' :
-            if (jumpEnemy) {
-                enemy.velocity.y = -20
-                jumpEnemy = false
-                setTimeout(() => jumpEnemy = true, 1000)
-            }
-            break
-        case 'ArrowDown' :
-            enemy.attack()
-            break
+            case 'ArrowRight' :
+                keys.arrowRight.pressed = true
+                enemy.lastKey = 'ArrowRight'
+                break
+            case 'ArrowLeft' :
+                keys.arrowLeft.pressed = true
+                enemy.lastKey = 'ArrowLeft'
+                break
+            case 'ArrowUp' :
+                if (jumpEnemy) {
+                    enemy.velocity.y = -20
+                    jumpEnemy = false
+                    setTimeout(() => jumpEnemy = true, 1000)
+                }
+                break
+            case 'ArrowDown' :
+                enemy.attack()
+                break
+        }
     }
 })
 
