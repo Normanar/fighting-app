@@ -60,7 +60,7 @@ class Fighter extends Sprite {
                     framesMax = 1,
                     offsetImg = {x: 0, y: 0},
                     sprites,
-                    attackBox = {offset: {}, width: undefined, height: undefined},
+                    attackBox = {offset: {}, width: undefined, height: undefined}
                 }) {
         super({
             position,
@@ -120,7 +120,6 @@ class Fighter extends Sprite {
     attack() {
         this.switchSprite('attack')
         this.isAttacking = true
-        //setTimeout(() => this.isAttacking = false, 100)
     }
 
     takeHit() {

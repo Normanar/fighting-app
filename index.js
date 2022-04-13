@@ -85,7 +85,7 @@ const player = new Fighter({
         },
         width: 200,
         height: 50
-    }
+    },
 })
 
 const enemy = new Fighter({
@@ -146,7 +146,7 @@ const enemy = new Fighter({
         },
         width: 140,
         height: 50
-    }
+    },
 })
 
 const keys = {
@@ -173,10 +173,18 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     background.update()
     shop.update()
+    c.fillStyle = 'rgba(255, 255, 255, 0.1)'
+    c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
     enemy.update()
     player.velocity.x = 0
     enemy.velocity.x = 0
+
+    if (timer > 58) {
+        document.querySelector('#fightingResult').style.display = "flex"
+        document.querySelector('#fightingResult').innerHTML = "Fight!"
+        setTimeout(() => document.querySelector('#fightingResult').style.display = "none", 1000)
+    }
 
     //player movement
 
@@ -188,8 +196,6 @@ function animate() {
             player.velocity.x = -4
             player.switchSprite('run')
         }
-        // player.velocity.x = -4
-        // player.switchSprite('run')
     } else if (keys.d.pressed && player.lastKey === 'd') {
         if (player.position.x > 920) {
             player.velocity.x = 0
@@ -198,8 +204,6 @@ function animate() {
             player.velocity.x = 4
             player.switchSprite('run')
         }
-        // player.velocity.x = 4
-        // player.switchSprite('run')
     } else {
         player.switchSprite('idle')
     }
@@ -214,11 +218,21 @@ function animate() {
 
     //enemy movement
     if (keys.arrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-        enemy.velocity.x = -4
-        enemy.switchSprite('run')
+        if (enemy.position.x < 100) {
+            enemy.velocity.x = 0
+            enemy.switchSprite('run')
+        } else {
+            enemy.velocity.x = -4
+            enemy.switchSprite('run')
+        }
     } else if (keys.arrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-        enemy.velocity.x = 4
-        enemy.switchSprite('run')
+        if (enemy.position.x > 1020) {
+            enemy.velocity.x = 0
+            enemy.switchSprite('run')
+        } else {
+            enemy.velocity.x = 4
+            enemy.switchSprite('run')
+        }
     } else {
         enemy.switchSprite('idle')
     }
@@ -237,7 +251,9 @@ function animate() {
     ) {
         enemy.takeHit()
         player.isAttacking = false
-        document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+        gsap.to('#enemyHealth', {
+            width : enemy.health + '%'
+        })
     }
 
     // if player misses
@@ -250,7 +266,9 @@ function animate() {
     ) {
         player.takeHit()
         enemy.isAttacking = false
-        document.querySelector('#playerHealth').style.width = player.health + '%'
+        gsap.to('#playerHealth', {
+            width : player.health + '%'
+        })
     }
 
     // if enemy misses

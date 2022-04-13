@@ -14,10 +14,14 @@ function determineWinner({player, enemy}) {
     document.querySelector('#fightingResult').style.display = "flex"
     if (player.health === enemy.health) {
         document.querySelector('#fightingResult').innerHTML = "Tie!"
+        enemy.switchSprite('death')
+        player.switchSprite('death')
     } else if (player.health > enemy.health) {
         document.querySelector('#fightingResult').innerHTML = "Player 1 win!"
+        enemy.switchSprite('death')
     } else {
         document.querySelector('#fightingResult').innerHTML = "Player 2 win!"
+        player.switchSprite('death')
     }
 }
 
